@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>몇층이지 개인정보 처리방침</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+                 "Malgun Gothic", "맑은 고딕", sans-serif;
+    line-height: 1.7;
+    color: #1a1a1a;
+    background: #ffffff;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+    word-break: keep-all;
+  }
+  h1 { font-size: 26px; font-weight: 800; margin: 0 0 4px; letter-spacing: -0.5px; }
+  h2 {
+    font-size: 19px; font-weight: 700; margin: 36px 0 12px;
+    padding-top: 20px; border-top: 1px solid #ececec; letter-spacing: -0.3px;
+  }
+  h3 { font-size: 16px; font-weight: 700; margin: 20px 0 8px; }
+  p, li { font-size: 15px; }
+  .meta { color: #888; font-size: 13px; margin: 0 0 8px; }
+  .lead {
+    background: #f5f7fa; border-radius: 10px; padding: 14px 16px;
+    font-size: 15px; margin: 20px 0;
+  }
+  .highlight { font-weight: 700; color: #1558d6; }
+  table {
+    width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px;
+  }
+  th, td { border: 1px solid #e5e5e5; padding: 9px 11px; text-align: left; vertical-align: top; }
+  th { background: #f7f8fa; font-weight: 700; }
+  ul { padding-left: 20px; margin: 10px 0; }
+  li { margin: 4px 0; }
+  code {
+    background: #f0f2f5; padding: 1px 5px; border-radius: 4px;
+    font-size: 13px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  pre {
+    background: #f7f8fa; border: 1px solid #e5e5e5; border-radius: 8px;
+    padding: 14px; overflow-x: auto; font-size: 13px; line-height: 1.5;
+  }
+  .footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid #ececec;
+            color: #888; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>개인정보 처리방침</h1>
+<p class="meta">앱 이름: 몇층이지 (whatfloor)</p>
+<p class="meta">시행일자: 2026년 10월 12일 · 최종 수정일자: 2026년 10월 12일</p>
+
+<p style="margin-top:20px;">
+“몇층이지”(이하 “본 앱”)은 사용자의 개인정보를 소중히 다루며,
+「개인정보 보호법」 및 「위치정보의 보호 및 이용 등에 관한 법률」을 준수합니다.
+본 처리방침은 본 앱이 어떤 정보를 어떤 목적으로 수집·이용하는지 투명하게 설명합니다.
+</p>
+
+<h2>1. 한눈에 보기</h2>
+<table>
+  <tr><th>어디서</th><th>무엇</th><th>어떻게</th></tr>
+  <tr>
+    <td>사용자 기기 안</td>
+    <td>주차 위치, 층수 등 모든 개별 주차 기록</td>
+    <td>디바이스 내부 SQLite. 외부로 절대 나가지 않음.</td>
+  </tr>
+  <tr>
+    <td>사용자 기기 안 → Firebase (옵트인 시)</td>
+    <td>건물별 학습 결과만 (기준 고도, 평균 층고, 기여 횟수)</td>
+    <td>익명 처리. 개별 주차 기록·시각·정확한 GPS는 절대 업로드 안 함. 옵트인 OFF가 기본값.</td>
+  </tr>
+  <tr>
+    <td>외부 서비스 호출</td>
+    <td>좌표 → 주소 변환 (Kakao Local API)</td>
+    <td>좌표만 전송, 사용자 식별자 미포함</td>
+  </tr>
+</table>
+<p class="lead"><span class="highlight">핵심: 우리는 누가 언제 어디에 주차했는지 모릅니다.</span></p>
+
+<h2>2. 수집하는 정보</h2>
+
+<h3>2.1 자동으로 수집되는 정보</h3>
+<table>
+  <tr><th>항목</th><th>출처</th><th>사용 목적</th></tr>
+  <tr><td><strong>위치 정보</strong> (위도/경도/고도/정확도)</td><td>OS GPS</td><td>주차 위치 기록, 건물 매칭</td></tr>
+  <tr><td><strong>블루투스 연결 상태</strong></td><td>OS Bluetooth</td><td>차량 BT 끊김 → 주차 감지</td></tr>
+  <tr><td><strong>모션/활동 정보</strong> (iOS CoreMotion)</td><td>OS</td><td>차에서 내려 멈춘 순간 감지 (오탐 방지)</td></tr>
+  <tr><td><strong>기압 정보</strong></td><td>디바이스 기압계</td><td>층수 추정 보조</td></tr>
+  <tr><td><strong>앱 내부 식별자</strong></td><td>자체 생성</td><td>익명 사용자 ID (Firebase Anonymous Auth), 클라우드 공유 옵트인 시에만</td></tr>
+</table>
+
+<h3>2.2 사용자가 직접 입력하는 정보</h3>
+<ul>
+  <li>차량 블루투스 등록 정보 (기기명, 디바이스 ID — 기기 안에만 저장)</li>
+  <li>층수 (사용자가 직접 확정)</li>
+</ul>
+
+<h3>2.3 수집하지 않는 정보</h3>
+<ul>
+  <li>이름, 생년월일, 연락처, 이메일 등 개인 식별 정보</li>
+  <li>다른 앱 사용 내역</li>
+  <li>광고 식별자 (IDFA / GAID)</li>
+  <li>카메라, 마이크, 연락처, 사진 라이브러리</li>
+</ul>
+
+<h2>3. 정보의 저장 위치</h2>
+
+<h3>3.1 로컬 저장 (사용자 기기 안)</h3>
+<p>다음은 <strong>사용자 기기를 떠나지 않습니다</strong>:</p>
+<ul>
+  <li>모든 개별 주차 기록 (시각, 좌표, 층수, 건물명)</li>
+  <li>차량 블루투스 등록 정보</li>
+  <li>앱 설정</li>
+</ul>
+<p>저장 매체: 디바이스 내부 SQLite 데이터베이스 (앱 샌드박스 내).</p>
+
+<h3>3.2 클라우드 저장 (옵트인 시에만)</h3>
+<p>사용자가 명시적으로 동의(“익명 클라우드 공유”를 ON으로 설정)한 경우에만:</p>
+<ul>
+  <li><strong>업로드 대상</strong>: 건물별 학습 결과
+    <ul>
+      <li>건물명 (도로명 또는 라벨)</li>
+      <li>좌표 (geohash precision 7, 약 150m 단위로 라운딩 — 정확한 위치 미특정)</li>
+      <li>학습된 기준 고도, 평균 층고, 기여 횟수</li>
+    </ul>
+  </li>
+  <li><strong>업로드 안 함</strong>: 개별 주차 기록, 정확한 GPS, 시각, 사용자 식별자</li>
+</ul>
+<p>저장 위치: Google Firebase (Firestore, asia-northeast3 = 서울 리전).</p>
+<p><strong>기본값은 OFF</strong>. 첫 실행 시 동의 시트가 표시되며 사용자가 직접 선택합니다.</p>
+
+<h3>3.3 외부 API 호출 (실시간, 저장 X)</h3>
+<ul>
+  <li><strong>Kakao Local API</strong>: 좌표 → 주소 변환 시 좌표만 전송. 사용자 식별자 미포함.</li>
+  <li><strong>Google Geocoding API</strong>: 해외 좌표 대응용 (보조).</li>
+</ul>
+
+<h2>4. 이용 목적</h2>
+<ol>
+  <li><strong>주차 위치 자동 기록</strong>: BT 끊김 감지 → 위치 + 시각 저장</li>
+  <li><strong>층수 자동 추정</strong>: 같은 건물 학습 데이터 + 기압 변화 기반 추천</li>
+  <li><strong>알림 제공</strong>: 주차 감지 알림 (설정에서 끄기 가능)</li>
+  <li><strong>위젯 표시</strong>: 홈/잠금화면 위젯에 현재 주차 정보 표시</li>
+  <li><strong>클라우드 공유 (옵트인)</strong>: 다른 사용자가 처음 가는 건물에서도 추천받을 수 있도록 익명 학습 결과 기여</li>
+</ol>
+<p>위 외 목적(광고, 분석, 제3자 제공)으로 사용하지 않습니다.</p>
+
+<h2>5. 위치 정보 처리 (위치정보보호법 준수)</h2>
+<ul>
+  <li><strong>수집 항목</strong>: 위도, 경도, 고도, 정확도, 측정 시각</li>
+  <li><strong>수집 방법</strong>: OS 표준 GPS API</li>
+  <li><strong>이용 목적</strong>: 주차 위치 기록 및 건물 매칭</li>
+  <li><strong>보관 기간</strong>: 사용자가 삭제할 때까지 (앱 내 “전체 기록 삭제”로 즉시 삭제 가능)</li>
+  <li><strong>백그라운드 위치 사용</strong>: 차에서 내릴 때 BT 끊김 직후 1회. 지속 추적 안 함.</li>
+</ul>
+<p>위치 정보는 <strong>사용자 기기를 떠나지 않습니다</strong>
+(클라우드 옵트인 시에도 정확한 GPS는 업로드되지 않으며 geohash 150m 라운딩 적용).</p>
+
+<h2>6. 사용자 권리</h2>
+<table>
+  <tr><th>권리</th><th>행사 방법</th></tr>
+  <tr><td>열람</td><td>설정 → 데이터 → 전체 주차 기록</td></tr>
+  <tr><td>삭제 (개별)</td><td>전체 기록 화면에서 좌측으로 스와이프</td></tr>
+  <tr><td>삭제 (전체)</td><td>설정 → 데이터 → 전체 기록 삭제</td></tr>
+  <tr><td>클라우드 공유 철회</td><td>설정 → 익명 클라우드 공유 OFF</td></tr>
+  <tr><td>권한 철회</td><td>iOS/Android 시스템 설정에서 위치/알림/블루투스 권한 거부</td></tr>
+</table>
+<p>⚠️ <strong>클라우드 공유의 특성상</strong>: 한 번 익명 학습 결과 평균에 반영된 기여는
+다른 사용자의 합산 평균과 섞여 <em>개별 분리 삭제가 불가능</em>합니다.
+이는 첫 실행 동의 시트에서 명시됩니다.</p>
+
+<h2>7. 정보의 제3자 제공</h2>
+<p>본 앱은 사용자의 정보를 <strong>제3자에게 제공하거나 판매하지 않습니다</strong>. 다만 다음 경우 예외:</p>
+<ul>
+  <li><strong>법적 의무</strong>: 수사기관의 적법한 영장 등 법적 의무가 있는 경우</li>
+  <li><strong>위탁 처리 (인프라)</strong>: 클라우드 옵트인 시 Google Firebase에 건물 학습 결과 저장 (개별 주차 기록 X, 정확한 GPS X)</li>
+  <li><strong>위탁 처리 (지오코딩)</strong>: Kakao Local API 호출 (좌표만, 식별자 X)</li>
+</ul>
+
+<h2>8. 보안 조치</h2>
+<ul>
+  <li><strong>로컬 데이터</strong>: 디바이스 OS의 앱 샌드박스 격리 (iOS Data Protection, Android scoped storage)</li>
+  <li><strong>네트워크 통신</strong>: 모든 외부 API 호출은 HTTPS</li>
+  <li><strong>클라우드 (Firestore)</strong>: 익명 인증 토큰 기반 접근 제어, 보안 규칙으로 본인 데이터만 쓰기 가능</li>
+  <li><strong>분석 도구</strong>: 별도 분석/광고 SDK 사용 안 함</li>
+</ul>
+
+<h2>9. 권한별 사용 사유</h2>
+<table>
+  <tr><th>권한</th><th>사유</th></tr>
+  <tr><td>위치 (정확한 위치)</td><td>주차 위치를 기록하기 위해 필요해요</td></tr>
+  <tr><td>위치 (백그라운드)</td><td>차에서 내려도 위치 기록을 마무리하기 위해 필요해요</td></tr>
+  <tr><td>블루투스</td><td>차량 BT 끊김을 감지해 자동 기록하기 위해 필요해요</td></tr>
+  <tr><td>모션 (iOS)</td><td>차에서 내려서 멈춘 순간을 정확히 감지하기 위해 필요해요</td></tr>
+  <tr><td>알림</td><td>자동 주차 감지 결과를 알려드리기 위해 필요해요</td></tr>
+</table>
+
+<h2>10. 어린이 개인정보</h2>
+<p>본 앱은 만 14세 미만 어린이를 대상으로 하지 않습니다.</p>
+
+<h2>11. 처리방침 변경</h2>
+<p>본 처리방침은 법령·서비스 변경에 따라 개정될 수 있습니다.
+변경 시 앱 내 공지 또는 본 페이지에서 알려드립니다.</p>
+
+<h2>12. 문의</h2>
+<p>개인정보 관련 문의는 다음으로 연락 주시기 바랍니다.</p>
+<ul>
+  <li>개인정보 보호책임자: 홍익인간</li>
+  <li>이메일: <a href="mailto:hongikingandev@gmail.com">hongikingandev@gmail.com</a></li>
+</ul>
+
+<h2>부록: 데이터 흐름</h2>
+<pre>[사용자 기기]
+  ├── SQLite DB ──────────── (개별 주차 기록 — 외부로 안 나감)
+  ├── 위젯 데이터 ─────────── (같은 앱 안에서만)
+  └── 외부 API 호출
+        ├── Kakao Local API ── (좌표 → 주소, 식별자 X)
+        └── Firebase Firestore ── (옵트인 시에만, 건물 학습 결과만)
+              · geohash 150m 라운딩
+              · 익명 인증
+              · 가중 평균으로 다른 사용자 기여와 통합</pre>
+
+<p class="footer">
+본 처리방침은 「개인정보 보호법」 제30조 및 「위치정보의 보호 및 이용 등에 관한 법률」
+제18조에 따라 작성되었습니다.<br>
+© 2026 홍익인간 (몇층이지)
+</p>
+
+</body>
+</html>
